@@ -821,9 +821,9 @@ function App() {
       )}
 
       {isCustomOrderOpen && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-[#1b0b0f]/75 px-4 py-6 backdrop-blur-sm" onClick={closeCustomOrder}>
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-[#1b0b0f]/75 px-3 py-4 backdrop-blur-sm sm:px-4 sm:py-6" onClick={closeCustomOrder}>
           <div
-            className="relative w-full max-w-xl rounded-[2rem] border border-white/20 bg-[#fff8f3] p-6 text-[#5b241f] shadow-2xl sm:p-8"
+            className="relative max-h-[92vh] w-full max-w-[720px] overflow-y-auto rounded-[2rem] border border-white/20 bg-[#fff8f3] p-4 text-[#5b241f] shadow-2xl sm:p-6"
             onClick={(event) => event.stopPropagation()}
           >
             <button
@@ -835,14 +835,14 @@ function App() {
               <X size={18} />
             </button>
 
-            <div className="max-w-md">
-              <p className="text-xs font-bold uppercase tracking-[.26em] text-[#29965a] sm:text-sm">Custom order</p>
-              <h2 className="mt-3 font-display text-3xl font-bold tracking-[-.03em] text-[#5f201f] sm:text-4xl">Let&apos;s make it special</h2>
-              <p className="mt-3 text-sm leading-7 text-[#7b4b42]">Share the key details below and we&apos;ll open WhatsApp with your request ready to send.</p>
+            <div className="max-w-[520px] pr-10">
+              <p className="text-[11px] font-bold uppercase tracking-[.24em] text-[#29965a] sm:text-xs">Custom order</p>
+              <h2 className="mt-3 font-display text-[2rem] font-bold leading-[1.05] tracking-[-.03em] text-[#5f201f] sm:text-[2.4rem]">Let&apos;s make it special</h2>
+              <p className="mt-3 text-sm leading-6 text-[#7b4b42] sm:text-[0.97rem] sm:leading-7">Share the key details below and we&apos;ll open WhatsApp with your request ready to send.</p>
             </div>
 
-            <form className="mt-6 grid gap-4 sm:grid-cols-2" onSubmit={handleCustomOrderSubmit}>
-              <div>
+            <form className="mt-5 grid gap-3 sm:grid-cols-2 sm:gap-4" onSubmit={handleCustomOrderSubmit}>
+              <div className="sm:col-span-1">
                 <label htmlFor="custom-name" className="mb-2 block text-sm font-semibold text-[#7b4b42]">Name</label>
                 <input
                   id="custom-name"
@@ -854,7 +854,7 @@ function App() {
                 />
               </div>
 
-              <div>
+              <div className="sm:col-span-1">
                 <label htmlFor="event-type" className="mb-2 block text-sm font-semibold text-[#7b4b42]">Event type</label>
                 <select
                   id="event-type"
@@ -912,10 +912,10 @@ function App() {
 
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25a85a] px-6 py-3.5 font-bold text-white shadow-lg shadow-[#23653b]/20 transition hover:-translate-y-0.5 hover:bg-[#187b40] sm:col-span-2"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25a85a] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#23653b]/20 transition hover:-translate-y-0.5 hover:bg-[#187b40] sm:col-span-2 sm:text-base"
               >
                 <WhatsAppIcon size={19} />
-                Send order request on WhatsApp
+                <span className="whitespace-nowrap">Send order request on WhatsApp</span>
               </button>
             </form>
           </div>
