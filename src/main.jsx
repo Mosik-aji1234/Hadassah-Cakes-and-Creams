@@ -202,6 +202,7 @@ function App() {
   const [isHeaderSolid, setIsHeaderSolid] = useState(false)
   const [activeNav, setActiveNav] = useState('home')
   const [activeGallerySlug, setActiveGallerySlug] = useState(null)
+  const [selectedImage, setSelectedImage] = useState(null)
   const [reviewName, setReviewName] = useState('')
   const [reviewText, setReviewText] = useState('')
   const [reviews, setReviews] = useState(loadReviews)
@@ -212,6 +213,8 @@ function App() {
     setIsTreatsOpen(false)
     setActiveGallerySlug(null)
   }
+  const openImagePreview = (image, title) => setSelectedImage({ image, title })
+  const closeImagePreview = () => setSelectedImage(null)
 
   const openReview = () => setIsReviewOpen(true)
   const closeReview = () => setIsReviewOpen(false)
@@ -419,9 +422,9 @@ function App() {
           </div>
         )}
 
-        <div id="home" className="mx-auto flex min-h-screen w-full max-w-[1440px] items-end px-5 pb-12 pt-20 sm:px-8 sm:pb-16 lg:px-12 lg:pb-20 lg:pt-28">
+        <div id="home" className="mx-auto flex min-h-screen w-full max-w-[1440px] items-end px-5 pb-12 pt-20 sm:items-end sm:px-8 sm:pb-16 sm:pt-20 lg:px-12 lg:pb-20 lg:pt-28">
           <div className="max-w-2xl">
-            <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[.24em] text-[#ffd092] sm:text-sm">
+            <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-[.24em] text-[#ffd092] sm:mb-5 sm:text-sm">
               <span className="h-px w-8 bg-[#f5c58f]" />
               Made with heart, served with joy
             </p>
@@ -431,7 +434,7 @@ function App() {
                 made to delight.
               </span>
             </h1>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-7 flex flex-wrap gap-3 sm:mt-8">
               <a
                 href="#treats"
                 className="group relative isolate inline-flex items-center gap-2 overflow-hidden rounded-full bg-[linear-gradient(110deg,#cc673a,#e58c4c,#d36c3c)] px-6 py-3.5 font-bold text-white shadow-xl shadow-[#25130c]/25 transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_32px_rgba(43,18,11,.35)] after:absolute after:inset-y-0 after:left-[-45%] after:w-1/3 after:skew-x-[-18deg] after:bg-white/25 after:transition-transform after:duration-500 group-hover:after:translate-x-[460%]"
@@ -484,29 +487,36 @@ function App() {
             </p>
           </div>
 
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:gap-5 xl:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
             {treatHighlights.map((item) => (
               <article
                 key={item.title}
-                className="group overflow-hidden rounded-[1.6rem] border border-[#e9cdbc] bg-white shadow-[0_16px_50px_rgba(95,32,31,.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_55px_rgba(95,32,31,.14)]"
+                className="group overflow-hidden rounded-[1.25rem] border border-[#e9cdbc] bg-white shadow-[0_16px_50px_rgba(95,32,31,.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_55px_rgba(95,32,31,.14)] sm:rounded-[1.6rem]"
               >
-                <div className="relative aspect-[4/3] overflow-hidden bg-[#eddad1]">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <span className="absolute left-4 top-4 rounded-full bg-gradient-to-r from-[#c53b3b] via-[#d96a3a] to-[#d7a24b] px-3 py-1 text-[11px] font-bold uppercase tracking-[.16em] text-white shadow-lg shadow-black/15">
-                    {item.category}
-                  </span>
-                </div>
-                <div className="flex h-full flex-col p-5">
-                  <h3 className="font-display text-xl font-bold leading-tight text-[#5b241f]">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-[#7a4f45]">{item.description}</p>
+                <button
+                  type="button"
+                  onClick={() => openImagePreview(item.image, item.title)}
+                  className="relative block w-full overflow-hidden text-left"
+                  aria-label={`View full image for ${item.title}`}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-[#eddad1]">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <span className="absolute left-3 top-3 rounded-full bg-gradient-to-r from-[#c53b3b] via-[#d96a3a] to-[#d7a24b] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.14em] text-white shadow-lg shadow-black/15 sm:left-4 sm:top-4 sm:px-3 sm:text-[11px]">
+                      {item.category}
+                    </span>
+                  </div>
+                </button>
+                <div className="flex h-full flex-col p-3 sm:p-5">
+                  <h3 className="font-display text-lg font-bold leading-tight text-[#5b241f] sm:text-xl">{item.title}</h3>
+                  <p className="mt-2 text-xs leading-5 text-[#7a4f45] sm:mt-3 sm:text-sm sm:leading-7">{item.description}</p>
                   <a
                     href={buildWhatsAppLink(buildInquiryMessage(item.title))}
-                    className="mt-5 inline-flex items-center justify-center rounded-full bg-[#d7a24b] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#28130f]/20 transition hover:-translate-y-0.5 hover:bg-[#b57a4a] hover:text-white"
+                    className="mt-4 inline-flex items-center justify-center rounded-full bg-[#d7a24b] px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-[#28130f]/20 transition hover:-translate-y-0.5 hover:bg-[#b57a4a] hover:text-white sm:mt-5 sm:px-5 sm:py-3 sm:text-sm"
                   >
                     Enquire now
                   </a>
@@ -713,6 +723,32 @@ function App() {
           </div>
         </div>
       </section>
+
+      {selectedImage && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#1b0b0f]/85 px-4 py-6 backdrop-blur-sm" onClick={closeImagePreview}>
+          <div
+            className="relative w-full max-w-4xl overflow-hidden rounded-[1.75rem] border border-white/15 bg-[#fff7f3] p-3 shadow-2xl sm:p-5"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={closeImagePreview}
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full border border-[#e7c8bd] bg-white text-[#8b4b42] transition hover:bg-[#fff3ee]"
+              aria-label="Close image preview"
+            >
+              <X size={18} />
+            </button>
+            <div className="overflow-hidden rounded-[1.25rem] bg-[#f3e2d8]">
+              <img
+                src={selectedImage.image}
+                alt={selectedImage.title}
+                className="max-h-[78vh] w-full object-contain"
+              />
+            </div>
+            <p className="mt-3 text-center font-display text-xl font-bold text-[#5b241f] sm:text-2xl">{selectedImage.title}</p>
+          </div>
+        </div>
+      )}
 
       {isReviewOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#1b0b0f]/75 px-4 py-6 backdrop-blur-sm" onClick={closeReview}>
@@ -961,28 +997,35 @@ function App() {
                           <p className="max-w-2xl text-sm leading-6 text-[#7b4b42]">Tap any card below to send an order enquiry for that exact product.</p>
                         </div>
 
-                        <div className={`mt-6 flex gap-5 overflow-x-auto pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:overflow-visible lg:pb-0 ${section.galleryClass}`}>
+                        <div className={`mt-6 flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:grid lg:gap-5 lg:overflow-visible lg:pb-0 ${section.galleryClass}`}>
                           {section.gallery.map((item) => (
                             <article
                               key={item.title}
-                              className="min-w-[82%] snap-start overflow-hidden rounded-[1.5rem] border border-[#ead2c8] bg-white shadow-[0_12px_35px_rgba(95,32,31,.08)] sm:min-w-0"
+                              className="min-w-[78%] snap-start overflow-hidden rounded-[1.2rem] border border-[#ead2c8] bg-white shadow-[0_12px_35px_rgba(95,32,31,.08)] sm:min-w-0 sm:rounded-[1.5rem]"
                             >
-                              <div className="aspect-[4/3] overflow-hidden bg-[#f2e2d9]">
-                                <img
-                                  src={item.image}
-                                  alt={item.title}
-                                  className="h-full w-full object-cover transition duration-500 hover:scale-105"
-                                  loading="lazy"
-                                />
-                              </div>
-                              <div className="p-5">
+                              <button
+                                type="button"
+                                onClick={() => openImagePreview(item.image, item.title)}
+                                className="block w-full overflow-hidden text-left"
+                                aria-label={`View full image for ${item.title}`}
+                              >
+                                <div className="aspect-[4/3] overflow-hidden bg-[#f2e2d9]">
+                                  <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    className="h-full w-full object-cover transition duration-500 hover:scale-105"
+                                    loading="lazy"
+                                  />
+                                </div>
+                              </button>
+                              <div className="p-4 sm:p-5">
                                 <span className="inline-flex rounded-full bg-gradient-to-r from-[#c53b3b] via-[#d96a3a] to-[#d7a24b] px-3 py-1 text-[11px] font-bold uppercase tracking-[.16em] text-white">
                                   {item.category}
                                 </span>
-                                <h4 className="mt-4 font-display text-xl sm:text-2xl font-bold text-[#5b241f]">{item.title}</h4>
+                                <h4 className="mt-3 font-display text-lg font-bold text-[#5b241f] sm:mt-4 sm:text-xl lg:text-2xl">{item.title}</h4>
                                 <a
                                   href={buildWhatsAppLink(buildInquiryMessage(item.title))}
-                                  className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-[#d7a24b] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#28130f]/20 transition hover:-translate-y-0.5 hover:bg-[#b57a4a] hover:text-white"
+                                  className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-[#d7a24b] px-5 py-3 text-sm font-bold text-white shadow-lg shadow-[#28130f]/20 transition hover:-translate-y-0.5 hover:bg-[#b57a4a] hover:text-white"
                                 >
                                   Order Now!
                                 </a>
